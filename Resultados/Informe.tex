@@ -1,0 +1,798 @@
+\documentclass[]{tufte-handout}
+
+% ams
+\usepackage{amssymb,amsmath}
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \makeatletter
+  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
+  \makeatother
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \makeatletter
+  \@ifpackageloaded{soul}{
+     \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+     \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+   }{}
+  \makeatother
+
+\fi
+
+% graphix
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+% booktabs
+\usepackage{booktabs}
+
+% url
+\usepackage{url}
+
+% hyperref
+\usepackage{hyperref}
+
+% units.
+\usepackage{units}
+
+
+\setcounter{secnumdepth}{-1}
+
+% citations
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+
+% pandoc syntax highlighting
+
+% table with pandoc
+
+% multiplecol
+\usepackage{multicol}
+
+% strikeout
+\usepackage[normalem]{ulem}
+
+% morefloats
+\usepackage{morefloats}
+
+
+% tightlist macro required by pandoc >= 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% title / author / date
+\title[R Markdown]{Informe estadística multivariada}
+\author{Paola Angarita}
+\date{2025-04-26}
+
+\usepackage{ragged2e}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\begin{center}
+\LARGE\textbf{Análisis exploratorio de datos Departamento del Vichada}
+\end{center}
+
+\section{Introducción}\label{introducciuxf3n}
+
+\begin{justify}
+Este informe presenta un análisis exploratorio de los datos del Censo Nacional Agropecuario (CNA) para el departamento del Vichada, con el objetivo de ofrecer una visión general de las principales características del sector agropecuario en esta región. 
+
+\begin{marginfigure}
+\includegraphics[width=0.8\linewidth]{mapa_vichada} \caption[Mapa del departamento del Vichada]{Mapa del departamento del Vichada.}\label{fig:mapa-vichada}
+\end{marginfigure}
+A través de un recorrido por variables claves como   área de pastos, cantidad de leche recolectada, área total de la UPA y algunas predominancias étnicas y de tenencia del terreno, se busca identificar patrones, contrastes y particularidades que permitan una mejor comprensión del contexto rural del departamento. Inicialmente, la base de datos contenía un total de 5,562 registros. Sin embargo, tras un análisis exploratorio, se identificaron datos faltantes, lo que requirió un proceso de depuración. Como resultado, la base de datos se redujo a 1,062 registros. Este análisis constituye un insumo preliminar para investigaciones más profundas sobre el departamento.
+
+\end{justify}
+
+\section{Selección de variables}\label{selecciuxf3n-de-variables}
+
+Dentro de los datos recopilados por el CNA, se estudió específicamente
+la categoría ``Unidad Productora'', que contiene información sobre
+unidades productoras agropecuarias (UPA), así como uso del suelo, área y
+tenencia de la tierra.Se seleccionaron 9 variables para el análisis en
+el departamento del Vichada. Tomando las siguientes variables
+cuantitativas como variables de estudio: - Área de pastos\\
+- Número de hembras\\
+- Cantidad de leche recolectada\\
+- Área total de la UPA\\
+- Número de personas en el predio
+
+Por otra parte, las variables cualitativas a estudiar son las
+siguientes: - Predominancia étnica\\
+- Predominancia tenencia UPA\\
+- Fenómeno que afectó los pastos sembrados\\
+- Pastos o Sábanas
+
+\section{Análisis de las variables
+cualitativas}\label{anuxe1lisis-de-las-variables-cualitativas}
+
+A continuación, se muestra la tabla de resumen estadístico de las
+variables cuantitativas. \vspace{0,5 cm}
+
+\begin{tabular}{llllll}
+\toprule
+  &  Área pastos & Número hembras & Producción leche &   Área total &   N.Personas\\
+\midrule
+ & Min.   :        0 & Min.   :  0.00 & Min.   :   0.0 & Min.   :      843 & Min.   : 0.000\\
+ & 1st Qu.:    71485 & 1st Qu.:  2.00 & 1st Qu.:  10.0 & 1st Qu.:  1307879 & 1st Qu.: 2.000\\
+ & Median :  2140186 & Median :  8.50 & Median :  30.0 & Median :  4650394 & Median : 3.000\\
+ & Mean   :  6913700 & Mean   : 32.46 & Mean   : 112.9 & Mean   : 11235471 & Mean   : 3.642\\
+ & 3rd Qu.:  7433453 & 3rd Qu.: 29.00 & 3rd Qu.:  93.0 & 3rd Qu.: 11836631 & 3rd Qu.: 5.000\\
+\addlinespace
+ & Max.   :345922379 & Max.   :896.00 & Max.   :7136.0 & Max.   :435334384 & Max.   :28.000\\
+\bottomrule
+\end{tabular}
+
+\section{Boxplot de cada variable
+cuantitativa.}\label{boxplot-de-cada-variable-cuantitativa.}
+
+\begin{figure*}
+\includegraphics{Informe_files/figure-latex/caja-1} \end{figure*}
+\begin{justify}
+\textbf{Área de pastos:} Se observa una gran dispersión en los datos, con valores mínimos cercanos a 0 y un valor máximo que supera los 345 millones de metros, lo que indica la presencia de valores atípicos extremos. La mediana es de 2,1 millones, y el rango intercuartílico también es amplio. Esto sugiere que, aunque la mayoría de las UPA tienen áreas moderadas, algunas pocas poseen extensiones enormes que distorsionan el promedio.
+
+\textbf{Número de hembras:} El valor mínimo es 0 y el máximo es 896, con una media de 32,46 y una mediana de 8,5. La asimetría positiva es evidente, muchas UPA tienen pocas hembras y unas pocas concentran un número mucho mayor, lo que puede relacionarse con el tamaño o tipo de explotación ganadera.
+
+\textbf{Producción de leche:} Al igual que el número de hembras, esta variable muestra una fuerte asimetría. La mediana es de 30 litros, mientras que el promedio se eleva hasta 112,9 litros, con un máximo de 7136 litros. Esto indica que hay explotaciones con producciones significativamente mayores que el resto.
+
+\textbf{Área total de la UPA:} Esta variable también evidencia una gran heterogeneidad. La mediana es de 4,6 millones de hectáreas, pero el promedio es de 11,2 millones y el máximo se eleva a 435 millones, confirmando la existencia de valores extremos que influyen en las medidas de tendencia central.
+
+\textbf{Número de personas en el predio:} La mayoría de las unidades tienen entre 2 y 5 personas, con un promedio de 3,64. No obstante, hay predios con hasta 28 personas, lo que puede indicar estructuras familiares amplias o presencia de trabajadores permanentes.
+
+\end{justify}
+
+\section{Vector de medias}\label{vector-de-medias}
+
+\begin{justify}
+Con el fin de profundizar en el estudio, se analizaron los vectores de medias de las variables cuantitativas. Este enfoque permitió obtener una visión más precisa sobre el comportamiento de la distribución y las características centrales de los datos.
+
+\begin{marginfigure}
+ 
+\begin{tabular}{lr}
+\toprule
+Variable & Media\\
+\midrule
+Area pastos & 6913700.21\\
+Numero hembras & 32.46\\
+Produccion leche & 112.89\\
+Area total & 11235471.49\\
+Numero personas & 3.64\\
+\bottomrule
+\end{tabular} 
+\end{marginfigure}
+\vspace{0.2 cm}
+Los resultados del vector de medias muestran que en promedio, el área de pastos por unidad productiva asciende a 6.913.700 hectáreas, lo cual refleja la gran extensión de terreno dedicada a esta actividad en el departamento del Vichada. En cuanto a la producción ganadera, se observan en promedio 32 hembras por unidad y una recolección de aproximadamente 113 litros de leche, esto sugiere un nivel de producción moderado que podría responder a sistemas extensivos de producción. Por su parte, el área total promedio de las unidades productivas es de 11.235.471 metros, reforzando la tendencia a la alta disponibilidad de tierra. Finalmente, el número promedio de personas por predio es de 3,64, lo que da una idea sobre la mano de obra disponible en cada unidad productiva.
+\end{justify}
+
+\section{Matriz de varianzas y
+correlaciones}\label{matriz-de-varianzas-y-correlaciones}
+
+\begin{tabular}{lrrrrr}
+\toprule
+  & Area pastos & Numero hembras & Produccion leche & Area total & N.Personas\\
+\midrule
+Area pastos & 2.812919e+14 & 3.435438e+08 & 1.225138e+09 & 3.644199e+14 & 1664286.8620\\
+Numero hembras & 3.435438e+08 & 5.348209e+03 & 2.147836e+04 & 6.787210e+08 & 15.7690\\
+Produccion leche & 1.225138e+09 & 2.147836e+04 & 1.179107e+05 & 2.460831e+09 & 78.4271\\
+Area total & 3.644199e+14 & 6.787210e+08 & 2.460831e+09 & 5.465094e+14 & 2639860.0945\\
+N.Personas & 1.664287e+06 & 1.576900e+01 & 7.842710e+01 & 2.639860e+06 & 5.9378\\
+\bottomrule
+\end{tabular}
+
+\begin{justify}
+Se observa que las variables área pastos  y área total presentan las varianzas más altas, esto  indica una gran variabilidad entre las observaciones de estas dimensiones territoriales. En contraste, la variable Número de personas tiene la varianza más baja , lo que sugiere que es una de las variables más homogéneas en el conjunto de datos.
+
+En cuanto a las covarianzas, los valores positivos indican que existe una relación directa entre las variables. Por ejemplo, la fuerte covarianza entre área pastos y área total  muestra que a mayor cantidad de área en pastos, suele haber también una mayor área total de la unidad productiva. De igual forma, variables como Producción de leche y Número de hembras presentan una covarianza positiva , evidenciando la siguiente relación: a mayor número de hembras, es probable que se recolecte más leche.
+
+Finalmente, aunque algunas covarianzas como las que incluyen el Número de personas son positivas, sus magnitudes son relativamente pequeñas en comparación con otras variables, esto apunta a relación menos marcada con las demás unidades productivas.
+\end{justify}
+
+\section{Matriz de correlaciones}\label{matriz-de-correlaciones}
+
+\begin{tabular}{lrrrrr}
+\toprule
+  & Area pastos & Numero hembras & Produccion leche & Area total & N.Personas\\
+\midrule
+Area pastos & 1.0000 & 0.2801 & 0.2127 & 0.9294 & 0.0407\\
+Numero hembras & 0.2801 & 1.0000 & 0.8553 & 0.3970 & 0.0885\\
+Produccion leche & 0.2127 & 0.8553 & 1.0000 & 0.3066 & 0.0937\\
+Area total & 0.9294 & 0.3970 & 0.3066 & 1.0000 & 0.0463\\
+N.Personas & 0.0407 & 0.0885 & 0.0937 & 0.0463 & 1.0000\\
+\bottomrule
+\end{tabular}
+\begin{justify}
+En los resultados observamos una fuerte correlación positiva entre:
+
+Área pastos y área total, indica que las unidades productivas con mayor superficie total también tienden a tener una mayor extensión dedicada a pastos. Número de hembras y producción de leche, ya que más hembras suelen traducirse en mayor producción de leche.
+
+El área total respecto al número de hembras y producción de leche tiene una correlación de intensidad moderada, igualmente el área de pastos y el número de hembras; estas asociaciones sugieren que aunque hay cierta relación, no es determinante entre estas variables.
+
+Finalmente, el número de personas en el predio muestra correlaciones muy bajas con el resto de variables, como con área total o producción de leche, lo que indica que el tamaño del grupo humano residente no está fuertemente relacionado con las dimensiones físicas o productivas de la unidad agropecuaria.
+
+\end{justify}
+
+\section{Dispersograma}\label{dispersograma}
+
+\begin{justify}
+Se evidencian asociaciones fuertes como la existente entre el área de pastos y el área total, con una alineación clara que respalda la alta correlación observada. 
+\begin{marginfigure}
+\includegraphics[width=1.2\linewidth]{Informe_files/figure-latex/disp-1} \end{marginfigure}
+En contraste, variables como el número de personas en el predio no muestran una relación aparente con el resto de variables, lo que concuerda con sus bajos coeficientes de correlación. Además, es posible identificar valores atípicos, especialmente en variables como la producción de leche y área total, que presentan puntos significativamente alejados del resto.
+\end{justify}
+
+\section{Medidas globales de
+variabilidad}\label{medidas-globales-de-variabilidad}
+
+\begin{justify}
+A continuación se describen las principales conclusiones derivadas de cada estadístico:
+\begin{marginfigure}
+ 
+\begin{tabular}{lr}
+\toprule
+Medida & Valor\\
+\midrule
+Varianza total & 8.278013e+14\\
+Varianza promedio & 1.655603e+14\\
+Varianza general & 1.625198e+37\\
+Desv. típica general & 4.031375e+18\\
+Variabilidad promedio & 2.768097e+07\\
+\addlinespace
+Desv. promedio & 5.261270e+03\\
+\bottomrule
+\end{tabular} 
+\end{marginfigure}
+\textbf{Varianza total}: Un valor elevado como el obtenido refleja una alta variabilidad global entre las observaciones.
+
+\textbf{Varianza promedio}: Sugiere que, en promedio, cada variable presenta una alta dispersión.
+
+\textbf{Varianza generalizada}: Un valor tan elevado confirma la existencia de una considerable dispersión multivariada.
+
+\textbf{Desviación típica generalizada}:Refuerza la conclusión anterior sobre la magnitud de la variabilidad global.
+
+\textbf{Variabilidad promedio}: Da una medida más interpretable de la variabilidad promedio entre variables.
+
+\textbf{Desviación promedio}: Este valor también respalda la existencia de una dispersión notable en el conjunto de datos.
+
+\end{justify}
+
+\section{Distancia Mahalanobis}\label{distancia-mahalanobis}
+
+\begin{justify}
+
+La distancia de Mahalanobis permite medir cuán lejos se encuentra cada datos con respecto al centro multivariado de los datos, considerando no solo la media de cada variable, sino también las correlaciones entre ellas. 
+\begin{marginfigure}
+\includegraphics[width=1.2\linewidth]{Informe_files/figure-latex/mahabis-1} \end{marginfigure}
+Valores notablemente altos en esta medida pueden ser indicativos de datos atípicos, los cuales podrían requerir un análisis más detallado para evaluar su posible influencia o relevancia dentro del estudio.
+
+Del gráfico anterior se puede apreciar que la mayoría de los datos tienen una distancia cercana a cero. Sin embargo, destacan dos distancias significativas: una se encuentra en el dato 400, con una distancia de 700, y la otra en el dato 235, con una distancia de Mahalanobis de 450. Estos valores indican que estas observaciones están notablemente distantes de la media, lo que indica que podrían ser posibles outliers o valores atípicos en el conjunto de datos.
+\end{justify}
+
+\section{Coeficiente de asimetría y
+curtosis}\label{coeficiente-de-asimetruxeda-y-curtosis}
+
+\begin{justify}
+
+\begin{marginfigure}
+ 
+\begin{tabular}{lr}
+\toprule
+Medida & Valor\\
+\midrule
+Asimetría multi. & 532.7818\\
+Curtosis multi. & 817.4261\\
+\bottomrule
+\end{tabular} 
+\end{marginfigure}
+
+Los valores obtenidos son considerablemente altos, lo cual muestra que el conjunto de variables cuantitativas analizadas presenta una distribución alejada de la normalidad multivariada. En particular, la alta asimetría multivariada indica que los datos tienden a estar más concentrados en ciertas regiones del espacio, con colas largas o una fuerte inclinación hacia alguno de los extremos.
+
+Por otro lado, la kurtosis multivariada elevada implica la presencia de valores extremos o picos más pronunciados que los esperados bajo una distribución normal multivariada.
+
+\end{justify}
+
+\section{Prueba de multinormalidad}\label{prueba-de-multinormalidad}
+
+Caso univariado \vspace{0.3 cm}
+
+\begin{tabular}{lllll}
+\toprule
+Test & Variable & Statistic & p value & Normality\\
+\midrule
+Lilliefors (Kolmogorov-Smirnov) & Area pastos & 0.3401 & <0.001 & NO\\
+Lilliefors (Kolmogorov-Smirnov) & Numero hembras & 0.3286 & <0.001 & NO\\
+Lilliefors (Kolmogorov-Smirnov) & Produccion leche & 0.3712 & <0.001 & NO\\
+Lilliefors (Kolmogorov-Smirnov) & Area total & 0.3154 & <0.001 & NO\\
+Lilliefors (Kolmogorov-Smirnov) & N.Personas & 0.1591 & <0.001 & NO\\
+\bottomrule
+\end{tabular}
+\vspace{0.2 cm}
+\begin{justify}
+En base a los resultados de la prueba de Lilliefors para la normalidad univariada de las variables cuantitativas, se concluye que todas las variables presentan un p-valor menor a 0.001, por lo tanto rechazamos la hipótesis nula de normalidad en cada una de ellas. Es decir, ninguna de las variables sigue una distribución normal.
+\end{justify}
+
+Caso de multinormalidad \vspace{0.3 cm}
+
+\begin{tabular}{llll}
+\toprule
+Test & Statistic & p value & Result\\
+\midrule
+Mardia Skewness & 94302.3821110425 & 0 & NO\\
+Mardia Kurtosis & 1523.79517629967 & 0 & NO\\
+MVN & NA & NA & NO\\
+\bottomrule
+\end{tabular}
+\begin{justify}
+
+La prueba de Mardia para asimetría (skewness) y curtosis (kurtosis) proporciona las estadísticas y los valores p que evalúan si la distribución conjunta de todas las variables es multivariada normal. 
+
+\textbf{Mardia skewness}: El valor de la estadística es 94,302.38 y el valor p es 0, lo que indica que hay una asimetría significativa en las variables. Esto sugiere que las variables no siguen una distribución normal multivariada debido a la presencia de asimetría.
+
+\textbf{Mardia Kurtosis}: El valor de la estadística es 1,523.80 y el valor p es 0, lo que también indica una curtosis significativa. Por lo tanto, la distribución tiene colas más pesadas o más ligeras de lo esperado en una distribución normal multivariada.
+
+\textbf{MVN (Multivariate Normality)}: La prueba MVN no pudo ser realizada (NA) debido a que las estadísticas de Mardia Skewness y Mardia Kurtosis mostraron que los datos no siguen una distribución normal multivariada.
+\end{justify}
+
+\begin{justify}
+Además de las pruebas estadísticas, también se utiliza el siguiente gráfico para visualizar la normalidad de nuestras variables.
+
+El gráfico Chi-cuadrado compara las distancias de Mahalanobis ordenadas con los cuantiles teóricos de una distribución Chi-cuadrado con p=5 grados de libertad, correspondientes a las cinco variables cuantitativas analizadas.
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/chi-square-1} \end{marginfigure}
+En nuestro caso, se observa que muchos puntos se alejan notablemente de la línea, especialmente en la parte superior derecha del gráfico, lo cual sugiere la posible presencia de valores atípicos y desviaciones de la normalidad multivariada. Este patrón refuerza los resultados obtenidos previamente en las pruebas de normalidad univariada y multivariada (como Mardia), donde se rechazó la hipótesis de normalidad.
+\end{justify}
+
+\section{Análisis para las variables
+cualitativas.}\label{anuxe1lisis-para-las-variables-cualitativas.}
+
+\begin{center}
+\textbf{Predominancia Étnica vs. Tenencia Predominante}
+\end{center}
+
+\begin{tabular}{llllll}
+\toprule
+  & Asent. Ind. & Ninguno & Resg. Ind & T. Sin titulacion & Total\\
+\midrule
+Arriendo & 1 (0.1\%) & 15 (1.4\%) & 0 (0\%) & 0 (0\%) & 16 (1.5\%)\\
+Colectiva & 78 (7.3\%) & 58 (5.5\%) & 16 (1.5\%) & 1 (0.1\%) & 153 (14.4\%)\\
+Comunero & 21 (2\%) & 6 (0.6\%) & 2 (0.2\%) & 0 (0\%) & 29 (2.7\%)\\
+Invacion & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 1 (0.1\%)\\
+Mixta & 1 (0.1\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 2 (0.2\%)\\
+\addlinespace
+No sabe & 2 (0.2\%) & 91 (8.6\%) & 0 (0\%) & 0 (0\%) & 93 (8.8\%)\\
+Otra & 0 (0\%) & 19 (1.8\%) & 0 (0\%) & 0 (0\%) & 19 (1.8\%)\\
+Propia & 16 (1.5\%) & 721 (67.9\%) & 0 (0\%) & 11 (1\%) & 748 (70.4\%)\\
+Usufructo & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 1 (0.1\%)\\
+Total & 119 (11.2\%) & 913 (86\%) & 18 (1.7\%) & 12 (1.1\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\newpage
+
+\justify
+
+La tenencia propia es la forma más frecuente, representando el 70.4\% de
+los casos, de los cuales 721 (67.9\%) pertenecen a unidades productivas
+sin predominancia étnica definida (Ninguno), y 16 (1.5\%) están
+asociadas a predios con predominancia en asentamientos indígenas.
+
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/heat1-1} \end{marginfigure}
+
+\justify
+
+La tenencia colectiva, por su parte, se presenta en 153 casos (14.4\%),
+siendo más frecuente en unidades productivas con predominancia
+Asentamientos indígenas (7.3\%) y Ninguno (5.5\%). Es destacable que
+categorías como invación, mixta y usufructo representan proporciones
+insignificantes en el total (menos del 0.2\% cada una). Finalmente, las
+categorías ``Territorios sin titulación'' y ``Registro indígena''
+representan una baja proporción en el total, indicando posiblemente una
+menor formalización o presencia de estos tipos de tenencia en el
+departamento del Vichada.
+
+\begin{center}
+\textbf{Predominancia Étnica vs. Fenómenos}
+\end{center}
+
+\begin{tabular}{llllll}
+\toprule
+  & Asent. Ind. & Ninguno & Resg. Ind & T. Sin titulacion & Total\\
+\midrule
+Enfermedad & 2 (0.2\%) & 6 (0.6\%) & 0 (0\%) & 0 (0\%) & 8 (0.8\%)\\
+Exceso de LLuvia & 2 (0.2\%) & 6 (0.6\%) & 0 (0\%) & 1 (0.1\%) & 9 (0.8\%)\\
+Granizada & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 1 (0.1\%)\\
+Helada & 0 (0\%) & 2 (0.2\%) & 0 (0\%) & 0 (0\%) & 2 (0.2\%)\\
+Incendio & 7 (0.7\%) & 21 (2\%) & 0 (0\%) & 0 (0\%) & 28 (2.6\%)\\
+\addlinespace
+Inundación & 9 (0.8\%) & 13 (1.2\%) & 1 (0.1\%) & 0 (0\%) & 23 (2.2\%)\\
+Lluvia dest. & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 1 (0.1\%)\\
+No afectados & 80 (7.5\%) & 393 (37\%) & 11 (1\%) & 6 (0.6\%) & 490 (46.1\%)\\
+Plaga & 4 (0.4\%) & 44 (4.1\%) & 3 (0.3\%) & 2 (0.2\%) & 53 (5\%)\\
+Sequía & 14 (1.3\%) & 425 (40\%) & 2 (0.2\%) & 3 (0.3\%) & 444 (41.8\%)\\
+\addlinespace
+Vientos fuertes & 1 (0.1\%) & 1 (0.1\%) & 1 (0.1\%) & 0 (0\%) & 3 (0.3\%)\\
+Total & 119 (11.2\%) & 913 (86\%) & 18 (1.7\%) & 12 (1.1\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\vspace{0.5cm}
+
+Las afectaciones más frecuentes fueron por sequía (41.8\%) y ``no
+afectados'' (46.1\%). Estos dos grupos concentran cerca del 88\% de las
+observaciones, lo que sugiere una alta proporción de UPA que no reportan
+afectación o que han sido impactadas por la falta de lluvias.
+
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/heat2-1} \end{marginfigure}
+\vspace{0.5 cm}
+
+La sequía impactó principalmente a predios sin predominancia étnica,
+representando el 40\% del total. Plagas afectan al 5\% de las UPA, con
+una concentración en predios sin predominancia étnica (4.1\%). Otros
+fenómenos como inundaciones (2.2\%), incendios (2.6\%) y exceso de
+lluvia (0.8\%) muestran proporciones menores, con distribución más
+dispersa entre las categorías étnicas. Fenómenos menos comunes como
+heladas, granizadas, lluvia destructiva y vientos fuertes representan en
+conjunto menos del 1\% del total.
+
+\begin{center}
+\textbf{Predominancia Étnica vs. Pastos}
+\end{center}
+
+\begin{tabular}{llll}
+\toprule
+  & No & Si & Total\\
+\midrule
+Asent. Ind. & 57 (5.4\%) & 62 (5.8\%) & 119 (11.2\%)\\
+Ninguno & 109 (10.3\%) & 804 (75.7\%) & 913 (86\%)\\
+Resg. Ind & 6 (0.6\%) & 12 (1.1\%) & 18 (1.7\%)\\
+T. Sin titulacion & 2 (0.2\%) & 10 (0.9\%) & 12 (1.1\%)\\
+Total & 174 (16.4\%) & 888 (83.6\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\vspace{0.7cm}
+
+Se observa que la gran mayoría de las unidades productoras (83.6\%)
+reportaron la presencia de pastos o sabanas, mientras que solo el 16.4\%
+no cuenta con estos recursos.
+
+\begin{marginfigure}
+\includegraphics[width=1.2\linewidth]{Informe_files/figure-latex/heat3-1} \end{marginfigure}
+
+``Ninguno'' (es decir, sin predominancia étnica declarada) es la
+categoría más representativa, con el 86\% del total de casos. Dentro de
+este grupo, el 75.7\% cuenta con pastos o sabanas, lo que refuerza la
+tendencia general.
+
+En contraste, las unidades ubicadas en asentamientos indígenas
+representan un 11.2\% del total, con una distribución más equilibrada:
+52.1\% tiene pastos o sabanas y 47.9\% no los tiene.
+
+\begin{center}
+\textbf{Predominancia Tenencia vs. Fenómeno}
+\end{center}
+
+\begin{tabular}{llllll}
+\toprule
+  & Arriendo & Colectiva & Comunero & Invacion & Mixta\\
+\midrule
+Enfermedad & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 0 (0\%)\\
+Exceso de LLuvia & 1 (0.1\%) & 1 (0.1\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%)\\
+Granizada & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%)\\
+Helada & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%)\\
+Incendio & 1 (0.1\%) & 3 (0.3\%) & 0 (0\%) & 0 (0\%) & 0 (0\%)\\
+\addlinespace
+Inundación & 0 (0\%) & 6 (0.6\%) & 5 (0.5\%) & 0 (0\%) & 0 (0\%)\\
+Lluvia dest. & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 0 (0\%)\\
+No afectados & 11 (1\%) & 109 (10.3\%) & 14 (1.3\%) & 1 (0.1\%) & 1 (0.1\%)\\
+Plaga & 1 (0.1\%) & 10 (0.9\%) & 2 (0.2\%) & 0 (0\%) & 0 (0\%)\\
+Sequía & 2 (0.2\%) & 22 (2.1\%) & 6 (0.6\%) & 0 (0\%) & 1 (0.1\%)\\
+\addlinespace
+Vientos fuertes & 0 (0\%) & 1 (0.1\%) & 1 (0.1\%) & 0 (0\%) & 0 (0\%)\\
+Total & 16 (1.5\%) & 153 (14.4\%) & 29 (2.7\%) & 1 (0.1\%) & 2 (0.2\%)\\
+\bottomrule
+\end{tabular}
+\newpage
+\vspace{0.7cm}
+
+\begin{tabular}{llllll}
+\toprule
+  & No sabe & Otra & Propia & Usufructo & Total\\
+\midrule
+Enfermedad & 1 (0.1\%) & 0 (0\%) & 6 (0.6\%) & 0 (0\%) & 8 (0.8\%)\\
+Exceso de LLuvia & 0 (0\%) & 2 (0.2\%) & 4 (0.4\%) & 0 (0\%) & 9 (0.8\%)\\
+Granizada & 0 (0\%) & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 1 (0.1\%)\\
+Helada & 0 (0\%) & 0 (0\%) & 2 (0.2\%) & 0 (0\%) & 2 (0.2\%)\\
+Incendio & 1 (0.1\%) & 1 (0.1\%) & 21 (2\%) & 1 (0.1\%) & 28 (2.6\%)\\
+\addlinespace
+Inundación & 1 (0.1\%) & 0 (0\%) & 11 (1\%) & 0 (0\%) & 23 (2.2\%)\\
+Lluvia dest. & 0 (0\%) & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 1 (0.1\%)\\
+No afectados & 34 (3.2\%) & 13 (1.2\%) & 307 (28.9\%) & 0 (0\%) & 490 (46.1\%)\\
+Plaga & 3 (0.3\%) & 0 (0\%) & 37 (3.5\%) & 0 (0\%) & 53 (5\%)\\
+Sequía & 53 (5\%) & 3 (0.3\%) & 357 (33.6\%) & 0 (0\%) & 444 (41.8\%)\\
+\addlinespace
+Vientos fuertes & 0 (0\%) & 0 (0\%) & 1 (0.1\%) & 0 (0\%) & 3 (0.3\%)\\
+Total & 93 (8.8\%) & 19 (1.8\%) & 748 (70.4\%) & 1 (0.1\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\vspace{0.7 cm}
+
+Hay tipos de fenómenos poco frecuentes como Granizada, Helada, o Vientos
+fuertes, que aparecen casi exclusivamente en predios de tenencia propia,
+posiblemente reflejando una mayor cobertura territorial.Eventos severos
+como incendios e inundaciones afectan principalmente predios propios,
+pero también aparecen en tenencias colectivas y ``no sabe'', lo cual
+puede sugerir problemas en zonas rurales comunes.
+
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/heat4-1} \end{marginfigure}
+
+El régimen de tenencia propia, al ser el más común, también es el más
+expuesto a eventos naturales. Sin embargo, la tenencia colectiva parece
+mostrar una distribución menos concentrada de afectaciones, lo que
+podría abrir líneas de análisis sobre gestión comunitaria del riesgo.La
+alta proporción de ``No afectados'' en diferentes tipos de tenencia
+puede interpretarse como un signo positivo, aunque hay que tener en
+cuenta que la sequía representa una amenaza recurrente y generalizada.
+
+\begin{center}
+\textbf{Predominancia Tenencia vs. Pastos}
+\end{center}
+
+\begin{tabular}{llll}
+\toprule
+  & 1 & 2 & Total\\
+\midrule
+Arriendo & 15 (1.4\%) & 1 (0.1\%) & 16 (1.5\%)\\
+Colectiva & 102 (9.6\%) & 51 (4.8\%) & 153 (14.4\%)\\
+Comunero & 15 (1.4\%) & 14 (1.3\%) & 29 (2.7\%)\\
+Invacion & 1 (0.1\%) & 0 (0\%) & 1 (0.1\%)\\
+Mixta & 2 (0.2\%) & 0 (0\%) & 2 (0.2\%)\\
+\addlinespace
+No sabe & 89 (8.4\%) & 4 (0.4\%) & 93 (8.8\%)\\
+Otra & 18 (1.7\%) & 1 (0.1\%) & 19 (1.8\%)\\
+Propia & 645 (60.7\%) & 103 (9.7\%) & 748 (70.4\%)\\
+Usufructo & 1 (0.1\%) & 0 (0\%) & 1 (0.1\%)\\
+Total & 888 (83.6\%) & 174 (16.4\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\vspace{0.7 cm}
+
+Propiedad privada domina en ambos grupos, 60.7\% de quienes no tienen
+pastos/sabanas tienen tenencia propia y también representa el mayor
+porcentaje entre quienes sí tienen pastos/sabanas (9.7\%). Esto indica
+que la tenencia propia es predominante sin importar la presencia de
+pastos o sabanas.
+
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/heat5-1} \end{marginfigure}
+
+En tenencia colectiva, el 33\% (51/153) tienen pastos/sabanas y en
+comunera, casi la mitad también (14 de 29) tiene pastos/sabanas. Esto
+puede sugerir que formas colectivas de tenencia podrían estar asociadas
+a usos compartidos del suelo o actividades ganaderas.Además arriendo (15
+de 16) y ``no sabe'' (89 de 93) se asocian casi exclusivamente con
+ausencia de pastos.
+
+\begin{center}
+\textbf{Fenonemo vs. Pastos}
+\end{center}
+
+\begin{tabular}{llll}
+\toprule
+  & No & Si & Total\\
+\midrule
+Enfermedad & 2 (0.2\%) & 6 (0.6\%) & 8 (0.8\%)\\
+Exceso de LLuvia & 2 (0.2\%) & 7 (0.7\%) & 9 (0.8\%)\\
+Granizada & 0 (0\%) & 1 (0.1\%) & 1 (0.1\%)\\
+Helada & 0 (0\%) & 2 (0.2\%) & 2 (0.2\%)\\
+Incendio & 7 (0.7\%) & 21 (2\%) & 28 (2.6\%)\\
+\addlinespace
+Inundación & 15 (1.4\%) & 8 (0.8\%) & 23 (2.2\%)\\
+Lluvia dest. & 0 (0\%) & 1 (0.1\%) & 1 (0.1\%)\\
+No afectados & 108 (10.2\%) & 382 (36\%) & 490 (46.1\%)\\
+Plaga & 9 (0.8\%) & 44 (4.1\%) & 53 (5\%)\\
+Sequía & 29 (2.7\%) & 415 (39.1\%) & 444 (41.8\%)\\
+\addlinespace
+Vientos fuertes & 2 (0.2\%) & 1 (0.1\%) & 3 (0.3\%)\\
+Total & 174 (16.4\%) & 888 (83.6\%) & 1062 (100\%)\\
+\bottomrule
+\end{tabular}
+\vspace{0.7 cm}
+
+La sequía domina ampliamente en las áreas con pastos, representa el
+39.1\% del total general y el 46.7\% de los casos con pastos/sabanas,
+esto sugiere una fuerte vulnerabilidad de las áreas con pastos a
+fenómenos de sequía. ``No afectados'' también se concentran en áreas con
+pastos, 382 de los 490 casos (78\%) corresponden a UPAs con pastos,esto
+podría indicar que muchas áreas con pastos no fueron afectadas por
+ningún fenómeno, o que presentan mejores condiciones de resiliencia.
+
+\begin{marginfigure}
+\includegraphics[width=1.3\linewidth]{Informe_files/figure-latex/heat6-1} \end{marginfigure}
+
+Fenómenos como enfermedades, plagas e incendios muestran una mayor
+ocurrencia relativa en áreas con pastos/sabanas; plagas (83\%) están en
+áreas con pastos, enfermedades 6 de 8, incendios: 21 de 28. Inundaciones
+se presentan más en zonas sin pastos (15 vs.~8 casos), lo que sugiere
+que los pastos podrían no estar en zonas propensas a este tipo de
+eventos, o que se ubican en zonas más elevadas o mejor drenadas.
+
+\section{Perfil fila y columna}\label{perfil-fila-y-columna}
+
+\includegraphics{Informe_files/figure-latex/perf-1} El perfil fila
+revela una concentración significativa de población étnica y comunero en
+formas de tenencia colectiva o tradicional, como Colectiva y mixta Esto
+podría reflejar la importancia de estas estructuras para pueblos
+indígenas y otras comunidades étnicas. En contraste, la mayoría de las
+demás formas de tenencia, incluyendo la propiedad individual están
+compuestas principalmente por personas sin pertenencia étnica. Este
+patrón sugiere posibles diferencias en el acceso, la organización y la
+formalización de la tenencia de la tierra, relacionadas con la
+pertenencia étnica.
+
+\includegraphics{Informe_files/figure-latex/perc-1} El gráfico de perfil
+columna evidencia diferencias claras en las formas de tenencia del
+terreno según la pertenencia étnica. Se observa que la forma de tenencia
+propia se presenta con gran porcentaje en ninguno y terreno sin
+titulación.. En contraste, las formas colectivas y comuneras tienen
+mayor participación relativa en grupos con predominancia indígena o
+afrodescendiente, lo cual puede estar relacionado con formas
+tradicionales de propiedad.
+
+\section{Prueba de independencia y
+asociación}\label{prueba-de-independencia-y-asociaciuxf3n}
+
+\begin{tabular}{lrrrrr}
+\toprule
+Comparación & Chi\_squared & df & p\_value & Contingency\_Coeff & Cramers\_V\\
+\midrule
+TENENCIA vs ETNIA & 539.1498 & 24 & 0 & 0.5803 & 0.4114\\
+FENOMENO vs ETNIA & 115.9389 & 30 & 0 & 0.3137 & 0.1908\\
+ETNIA vs PASTOS\_SABANAS & 103.2173 & 3 & 0 & 0.2976 & 0.3118\\
+FENOMENO vs TENENCIA & 203.7479 & 80 & 0 & 0.4012 & 0.1549\\
+TENENCIA vs PASTOS\_SABANAS & 70.9536 & 8 & 0 & 0.2503 & 0.2585\\
+\addlinespace
+FENOMENO vs PASTOS\_SABANAS & 91.4500 & 10 & 0 & 0.2816 & 0.2934\\
+\bottomrule
+\end{tabular}
+\vspace{0.5 cm}
+
+\textbf{TENENCIA vs ETNIA}: El valor p es extremadamente bajo , por lo
+que se rechaza la hipótesis nula de independencia. Esto indica que
+existe una asociación estadísticamente significativa entre el tipo de
+tenencia del terreno y la pertenencia étnica de los productores o
+unidades productivas. Es decir, la distribución de los tipos de tenencia
+varía según la etnia. El Coeficiente de contingencia indica una
+asociación moderada a fuerte entre las variables y el Cramér's V también
+sugiere una asociación moderada.
+
+Hay evidencia estadística sólida de que el tipo de tenencia de la tierra
+está relacionado con la pertenencia étnica. Esta relación no es débil,
+sino más bien moderadamente fuerte, lo que puede reflejar diferencias
+estructurales o históricas en el acceso y formalización de la tierra
+entre grupos étnicos.
+
+\textbf{FENOMENO vs ETNIA}: El valor p es muy pequeño, por lo que se
+rechaza la hipótesis nula de independencia. Esto indica que existe una
+relación estadísticamente significativa entre el tipo de fenómeno que
+afectó la producción agropecuaria y la pertenencia étnica. El
+Coeficiente de contingencia indica una asociación baja a moderada y el
+Cramér's V de sugiere que la fuerza de la asociación es débil.
+
+Aunque existe una asociación estadísticamente significativa entre los
+fenómenos naturales que han afectado la producción y la etnia del
+productor, la fuerza de esta asociación es débil. Esto podría sugerir
+que, si bien hay diferencias en la exposición o el reporte de fenómenos
+según etnia, estas diferencias no son muy marcadas en términos
+relativos.
+
+\textbf{ETNIA vs PASTOS}:Dado que el valor p es extremadamente bajo, se
+rechaza la hipótesis nula de independencia. Por lo tanto, se concluye
+que existe una asociación estadísticamente significativa entre la
+pertenencia étnica y la presencia o ausencia de pastos/sabanas en las
+unidades de producción agropecuaria.El Coeficiente de contingencia
+indica una asociación baja-moderada. y el Cramér's V sugiere una
+asociación moderada.
+
+Los resultados muestran que existe una relación significativa y
+moderadamente fuerte entre la pertenencia étnica y la propiedad de
+pastos o sabanas. Esto puede reflejar diferencias culturales, históricas
+o económicas en el uso del suelo según el grupo étnico.
+
+\textbf{FENOMENO vs TENENCIA}:La prueba de independencia muestra un
+valor p muy bajo, lo que implica que existe una asociación
+estadísticamente significativa entre el tipo de fenómeno natural
+reportado y la forma de tenencia de la tierra. El Coeficiente de
+contingencia indica una asociación baja-moderada y el Cramér's V sugiere
+que, aunque la asociación es estadísticamente significativa, su
+intensidad es baja.
+
+Los resultados indican que existe una relación estadísticamente
+significativa entre el tipo de fenómeno afectado (como sequía,
+granizada, helada, etc.) y el tipo de tenencia de la tierra (propia,
+arriendo, colectiva, etc.). Sin embargo, la fuerza de esa asociación es
+baja, lo que podría sugerir que la forma de tenencia no es un factor
+determinante fuerte en la exposición o impacto de fenómenos naturales,
+aunque sí hay diferencias notables en algunas categorías específicas.
+
+\textbf{TENENCIA vs PASTOS}:El valor p es extremadamente bajo, lo que
+indica que existe una asociación estadísticamente significativa entre la
+forma de tenencia del terreno y la presencia de pastos o sabanas en las
+UPA. El coeficiente de contingencia y Cramér's V indican una asociación
+de magnitud baja a moderada.
+
+Se evidencia una relación estadísticamente significativa entre la
+tenencia del terreno y la presencia de pastos o sabanas, con una
+intensidad de asociación baja-moderada. Esto sugiere que ciertos tipos
+de tenencia ---como la propiedad o la tenencia colectiva--- podrían
+estar más asociados con la conservación o el uso de áreas de pastos y
+sabanas, en comparación con modalidades como el arriendo o el usufructo.
+Esta relación podría estar mediada por aspectos como la estabilidad en
+el uso del suelo, incentivos para el mantenimiento de coberturas
+vegetales o acceso a recursos para el manejo del terreno.
+
+\textbf{FENOMENO vs PASTOS}:El valor p es extremadamente bajo, lo que
+indica una asociación altamente significativa entre los fenómenos
+climáticos reportados y la presencia de pastos o sabanas. El valor de
+Cramér's V indica una asociación moderada entre las variables. Esto
+sugiere que ciertos fenómenos climáticos se presentan con mayor o menor
+frecuencia dependiendo de si hay o no presencia de pastos/sabanas en la
+UPA.
+
+\section{Conclusiones}\label{conclusiones}
+
+\begin{itemize}
+\item
+  El análisis evidenció una asociación significativa entre la tenencia
+  de la tierra y la predominancia étnica, destacándose que los predios
+  de tenencia colectiva y comunera concentran mayor población étnica,
+  mientras que la propiedad privada es más frecuente entre población no
+  étnica.
+\item
+  Se encontró relación entre la presencia de pastos/sabanas y las
+  variables de tenencia y etnia: los predios de propiedad privada y sin
+  pertenencia étnica presentan una mayor proporción de pastos o sabanas,
+  sugiriendo diferentes dinámicas de uso del suelo.
+\item
+  Respecto a las afectaciones por fenómenos naturales, si bien se
+  identificaron asociaciones significativas, las medidas de intensidad
+  fueron moderadas, indicando que el riesgo ambiental afecta a todos los
+  grupos, pero en especial a predios con pastos/sabanas, donde la sequía
+  fue el fenómeno más reportado.
+\item
+  En conjunto, los resultados reflejan que la estructura de la tenencia
+  de la tierra, las características étnicas y las condiciones
+  ambientales están interrelacionadas y deben ser consideradas de manera
+  integral en la formulación de políticas de gestión territorial y
+  adaptación al riesgo.
+\end{itemize}
+
+\bibliography{skeleton.bib}
+
+
+
+\end{document}
